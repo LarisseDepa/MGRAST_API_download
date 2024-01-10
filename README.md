@@ -17,7 +17,7 @@ Este script automatiza o download de sequências nos estágios 050.1 e 299.1 do 
 1. Instale as dependências: `pip install requests argparse tqdm gzip`
 
 #### Modo de uso:
-- Execute o script: `python MGRAST_API_download.py -f ids.txt -o output_folder --failed-ids failed_metagenome_ids`
+- Execute o script: `python MGRAST_API_download.py -f ids.txt -o output_folder --failed-ids failed_metagenome_ids.txt`
    - Obs. É exibida uma barra de progresso durante o download.
 
 ### Argumentos:
