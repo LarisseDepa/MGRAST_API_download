@@ -1,4 +1,4 @@
-## MG-RAST API Sequence Downloader
+## MG-RAST API Download
 
 Este script automatiza o download de sequências nos estágios 050.1 e 299.1 do MG-RAST usando sua API pública. Ele aceita um arquivo de texto contendo identificadores MG-RAST (um por linha) e baixa os arquivos correspondentes, salvando-os em uma pasta especificada.
 
