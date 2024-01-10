@@ -25,12 +25,17 @@ Este script automatiza o download de sequências nos estágios 050.1 e 299.1 do 
 - `-f, --file`: Caminho para o arquivo de texto contendo MGRAST METAGENOME IDs. 
 - `-o, --output`: Pasta de destino para os arquivos baixados (padrão: "output").
 - `--failed-ids`: Nome do arquivo para armazenar IDs com falha no download (padrão: "failed_ids.txt").
-  
+- 
+#### Exemplo de arquivo de entrada (input)  `ids.txt:`
+`mgm4502539`
+
+`mgm4502540`
+
+`mgm4502541`
+
+Obs. É uma lista com metagenoma id...
 ### Descompactar os aquivos gz:
- `gzip -d id_050.1.fastq.gz`
-
- `gzip -d id_299.1.fastq.gz`
-
+Exemplo: `gzip -d id_050.1.fastq.gz` ou  `gzip -d id_299.1.fastq.gz`
 
 ### Mais informações:
 
