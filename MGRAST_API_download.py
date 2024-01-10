@@ -3,7 +3,7 @@
 Autoras: Larisse Depa e Larissa Depa
 Script para baixar sequências nos estágios 050.1 e 299.1 do MG-RAST.
 Para mais detalhes sobre o uso da API, consulte: https://api.mg-rast.org/api.html#download
-Version 1.0
+Version 1.2
 
 RUN: python MGRAST_API_download.py -f ids.txt -o output_folder --failed-ids failed_metagenome_ids.txt
 """
@@ -13,12 +13,22 @@ import os
 import requests
 import gzip
 from tqdm import tqdm
+from urllib.parse import urlparse, parse_qs
+import cgi
 
-# Variáveis para os nomes dos arquivos
-file_name_050 = "050.1"
-file_name_299 = "299.1"
 
-def download_mgrast_sequence(mg_id, file_name, output_folder, file_extension):
+def get_file_extension(response):
+    # Obter o nome do arquivo da resposta
+    content_disposition = response.headers.get('content-disposition', '')
+    _, params = cgi.parse_header(content_disposition)
+    file_name = params.get('filename', '')
+
+    # Obter a extensão do arquivo do nome
+    file_extension = os.path.splitext(file_name)[1].lstrip('.')
+
+    return file_extension
+
+def download_mgrast_sequence(mg_id, file_name, output_folder):
     # Construir URL de download
     download_url = f"https://api-ui.mg-rast.org/download/{mg_id}.3?file={file_name}"
 
@@ -27,6 +37,9 @@ def download_mgrast_sequence(mg_id, file_name, output_folder, file_extension):
         print(f"Iniciando download de {mg_id}_{file_name}...")
         response = requests.get(download_url, stream=True)
         response.raise_for_status()
+
+        # Obter a extensão do arquivo
+        file_extension = get_file_extension(response)
 
         # Criar pastas se não existirem
         folder_path = os.path.join(output_folder, file_name)
@@ -50,18 +63,18 @@ def download_mgrast_sequence(mg_id, file_name, output_folder, file_extension):
         print(f"Download concluído: {mg_id}_{file_name}.{file_extension}")
         return True, file_path
     except requests.exceptions.HTTPError as err:
-        print(f"Falha no download: {mg_id}_{file_name}.{file_extension}. Código de status: {err.response.status_code}")
+        print(f"Falha no download: {mg_id}_{file_name}. Código de status: {err.response.status_code}")
         return False, None
 
 def download_mgrast_sequences(ids, output_folder, failed_ids_file):
     print("Iniciando download...")
 
     for mg_id in ids:
-        # Tenta baixar o arquivo "050.1" com a extensão "fastq"
-        success_050, file_path_050 = download_mgrast_sequence(mg_id, file_name_050, output_folder, file_extension="fastq")
+        # Tenta baixar o arquivo "050.1"
+        success_050, file_path_050 = download_mgrast_sequence(mg_id, "050.1", output_folder)
 
-        # Tenta baixar o arquivo "299.1" com a extensão "fna" independentemente do sucesso ou falha anterior
-        success_299, file_path_299 = download_mgrast_sequence(mg_id, file_name_299, output_folder, file_extension="fna")
+        # Tenta baixar o arquivo "299.1"
+        success_299, file_path_299 = download_mgrast_sequence(mg_id, "299.1", output_folder)
 
         # Se ambos falharem, registra o ID que falhou em um arquivo
         if not success_050 and not success_299:
