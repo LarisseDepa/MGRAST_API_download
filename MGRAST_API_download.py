@@ -6,8 +6,6 @@ Para mais detalhes sobre o uso da API, consulte: https://api.mg-rast.org/api.htm
 Version 1.0
 
 RUN: python MGRAST_API_download.py -f ids.txt -o output_folder --failed-ids failed_metagenome_ids.txt
-
-
 """
 
 import argparse
@@ -19,7 +17,6 @@ from tqdm import tqdm
 # Variáveis para os nomes dos arquivos
 file_name_050 = "050.1"
 file_name_299 = "299.1"
-
 
 def download_mgrast_sequence(mg_id, file_name, output_folder, file_extension):
     # Construir URL de download
@@ -56,23 +53,20 @@ def download_mgrast_sequence(mg_id, file_name, output_folder, file_extension):
         print(f"Falha no download: {mg_id}_{file_name}.{file_extension}. Código de status: {err.response.status_code}")
         return False, None
 
-
 def download_mgrast_sequences(ids, output_folder, failed_ids_file):
-    print("Download iniciado...")
+    print("Iniciando download...")
 
     for mg_id in ids:
-        # Tenta baixar o arquivo "050.1" com a extensão "fastqc"
-        success_050, file_path = download_mgrast_sequence(mg_id, file_name_050, output_folder, file_extension="fastq")
+        # Tenta baixar o arquivo "050.1" com a extensão "fastq"
+        success_050, file_path_050 = download_mgrast_sequence(mg_id, file_name_050, output_folder, file_extension="fastq")
 
-        # Se falhar, tenta baixar o arquivo "299.1" com a extensão "fna"
-        if not success_050:
-            success_299, file_path = download_mgrast_sequence(mg_id, file_name_299, output_folder, file_extension="fna")
+        # Tenta baixar o arquivo "299.1" com a extensão "fna" independentemente do sucesso ou falha anterior
+        success_299, file_path_299 = download_mgrast_sequence(mg_id, file_name_299, output_folder, file_extension="fna")
 
-            # Se ambos falharem, registra o ID que falhou em um arquivo
-            if not success_299:
-                with open(failed_ids_file, "a") as failed_file:
-                    failed_file.write(f"{mg_id}\n")
-
+        # Se ambos falharem, registra o ID que falhou em um arquivo
+        if not success_050 and not success_299:
+            with open(failed_ids_file, "a") as failed_file:
+                failed_file.write(f"{mg_id}\n")
 
 def main():
     # Configurar o parser de argumentos de linha de comando
@@ -91,7 +85,6 @@ def main():
 
     # Chamar a função para baixar as sequências
     download_mgrast_sequences(mg_ids, args.output, args.failed_ids)
-
 
 if __name__ == "__main__":
     main()
