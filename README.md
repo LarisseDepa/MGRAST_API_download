@@ -3,7 +3,7 @@
 Este script automatiza o download de sequências nos estágios 050.1 e 299.1 do MG-RAST usando sua API pública. Ele aceita um arquivo de texto contendo identificadores MG-RAST (um por linha) e baixa os arquivos correspondentes, salvando-os em uma pasta especificada.
 
 ### Funcionalidades:
-- Faz download de sequências nos estágios 050.1 (formato FASTQ) e 299.1 (formato FASTA).
+- Faz download de sequências nos estágios 050.1 e 299.1 (formato FASTQ e FNA).
 - Grava IDs que falham no download em um arquivo txt para análise posterior.
 
 ### Instruções de uso:
