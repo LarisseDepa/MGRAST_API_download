@@ -41,3 +41,10 @@ Exemplo: `gzip -d id_050.1.fastq.gz` ou  `gzip -d id_299.1.fastq.gz`
 
 - [Documentação da API MG-RAST](https://api.mg-rast.org/api.html#download)
 
+## Aviso de Uso
+
+Ao utilizar este código ou realizar modificações no mesmo, é obrigatório citar as autoras Larisse Depa e Larissa Depa como contribuidoras originais.
+
+Por favor, reconheça a autoria ao incorporar ou adaptar este código em seus próprios projetos. 
+
+
